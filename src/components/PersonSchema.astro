@@ -1,0 +1,34 @@
+---
+import { SITE } from '../lib/site';
+
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: SITE.author,
+  url: Astro.site?.href,
+  jobTitle: 'Engineer and Product Builder',
+  email: `mailto:${SITE.email}`,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Sydney',
+    addressRegion: 'NSW',
+    addressCountry: 'AU',
+  },
+  alumniOf: [
+    { '@type': 'CollegeOrUniversity', name: 'UNSW Sydney' },
+    { '@type': 'CollegeOrUniversity', name: 'Amrita Vishwa Vidyapeetham' },
+  ],
+  knowsAbout: [
+    'Network engineering',
+    'Cloud infrastructure',
+    'Platform engineering',
+    'Application security',
+    'AI systems',
+    'Product engineering',
+  ],
+  sameAs: [SITE.social.github, SITE.social.linkedin],
+};
+
+const jsonLd = JSON.stringify(person).replace(/</g, '\\u003c');
+---
+<script type="application/ld+json" set:html={jsonLd} />

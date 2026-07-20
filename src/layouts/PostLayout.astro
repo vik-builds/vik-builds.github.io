@@ -1,0 +1,51 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PageShell from '../components/PageShell.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { formatDate, isoDate } from '../lib/format';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { post: CollectionEntry<'posts'> }
+const { post } = Astro.props;
+---
+<BaseLayout
+  title={`${post.data.title} · Vikranth Subramanian`}
+  description={post.data.description}
+  type="article"
+  publishedTime={post.data.date}
+  image={post.data.heroImage}
+>
+  <PageShell width="prose">
+    <article>
+      <PageHeader title={post.data.title}>
+        <time slot="eyebrow" datetime={isoDate(post.data.date)}>{formatDate(post.data.date)}</time>
+        <p class="lede">{post.data.description}</p>
+        {post.data.tags.length > 0 && (
+          <ul class="tags">{post.data.tags.map((tag) => <li>{tag}</li>)}</ul>
+        )}
+      </PageHeader>
+
+      {post.data.heroImage && post.data.heroAlt && (
+        <img class="hero" src={post.data.heroImage} alt={post.data.heroAlt} />
+      )}
+
+      {/* Long-form styling comes ENTIRELY from the global .prose rule set in
+          src/styles/global.css. Do not add prose rules here. */}
+      <div class="prose"><slot /></div>
+    </article>
+  </PageShell>
+</BaseLayout>
+
+<style>
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    font-size: var(--text-xs);
+    color: var(--color-text-dim);
+  }
+  .hero { border-radius: var(--radius-md); margin: 0 0 var(--space-8); }
+</style>

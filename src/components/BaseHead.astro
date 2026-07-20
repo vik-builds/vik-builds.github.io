@@ -1,0 +1,62 @@
+---
+import { SITE } from '../lib/site';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: 'website' | 'article';
+  publishedTime?: Date;
+}
+
+const {
+  title,
+  description,
+  image = '/og-default.png',
+  type = 'website',
+  publishedTime,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(image, Astro.site);
+const rssURL = new URL('rss.xml', Astro.site);
+---
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+
+<!-- Self-hosted Inter Variable (latin subset). Preloaded so the swap happens
+     before first paint rather than after the stylesheet is parsed. `crossorigin`
+     is REQUIRED even same-origin: fonts are fetched in CORS mode, and without it
+     the preload is discarded and the file downloads twice. -->
+<link
+  rel="preload"
+  href="/fonts/inter-latin-var.woff2"
+  as="font"
+  type="font/woff2"
+  crossorigin
+/>
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="author" content={SITE.author} />
+<link rel="canonical" href={canonicalURL} />
+
+<meta property="og:type" content={type} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:site_name" content={SITE.title} />
+<meta property="og:locale" content="en_AU" />
+{publishedTime && (
+  <meta property="article:published_time" content={publishedTime.toISOString()} />
+)}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<link rel="alternate" type="application/rss+xml" title={SITE.title} href={rssURL} />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />

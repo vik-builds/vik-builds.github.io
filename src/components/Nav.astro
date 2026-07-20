@@ -1,0 +1,80 @@
+---
+import { SITE } from '../lib/site';
+const current = Astro.url.pathname;
+---
+<nav aria-label="Primary">
+  <a class="brand" href="/">{SITE.title}</a>
+  <ul>
+    {SITE.nav.map((item) => (
+      <li>
+        <a
+          href={item.href}
+          aria-current={current === item.href ? 'page' : current.startsWith(item.href) ? 'true' : undefined}
+        >{item.label}</a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-6);
+    max-width: var(--width-content);
+    margin: 0 auto;
+    /* Block padding is --space-4, not --space-6, because each link now carries a
+       44px touch target of its own. 16 + 44 + 16 = 76px, i.e. the same header
+       height the --space-6 padding produced around a bare 25px text row. */
+    padding: var(--space-4) var(--space-6);
+  }
+  .brand {
+    font-weight: 600;
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-text);
+    text-decoration: none;
+    /* Keep the name on one line, because it is the site's identity, not a
+       paragraph. At 320px it needs ~166px of the 288px available inside the
+       gutters. */
+    white-space: nowrap;
+  }
+  ul {
+    display: flex;
+    gap: var(--space-6);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: var(--text-sm);
+  }
+  a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+  /* WCAG 2.5.8: 44px targets at every width, not just on touch viewports. */
+  li a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  a:hover, a:focus-visible, a[aria-current='page'] { color: var(--color-text); }
+  a[aria-current='page'] { text-decoration: underline; text-underline-offset: 6px; }
+
+  /* ---- Narrow viewports ----
+     The brand + three links measure ~361px, so they cannot share a row at 320px
+     (that overflow was what produced scrollWidth 312 > clientWidth 305). Below
+     640px the nav becomes two rows and the links grow to a 44px touch target. */
+  @media (max-width: 640px) {
+    nav {
+      padding: var(--space-4);
+      gap: var(--space-1) var(--space-4);
+    }
+    .brand { flex: 1 0 100%; }
+    ul {
+      flex: 1 0 100%;
+      gap: var(--space-6);
+    }
+  }
+</style>

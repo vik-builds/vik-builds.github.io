@@ -1,0 +1,110 @@
+---
+/**
+ * PageHeader: the single page-header treatment.
+ *
+ * Carries the restrained echo of the hero's "Signal" identity onto interior
+ * pages: an indigo->cyan gradient hairline above the h1, and a very low-opacity
+ * indigo field behind the header block. One bottom margin for every page, so
+ * vertical rhythm is identical site-wide.
+ *
+ * Slots:
+ *   eyebrow: small uppercase kicker above the h1 (date, role, error code)
+ *   default: lede paragraphs and header meta. Use the global helper classes
+ *            `.lede` and `.lede-lg` for standfirst copy.
+ */
+interface Props {
+  title: string;
+  align?: 'start' | 'center';
+}
+
+const { title, align = 'start' } = Astro.props;
+const hasEyebrow = Astro.slots.has('eyebrow');
+---
+<header class:list={['page-head', `align-${align}`]}>
+  <span class="accent-rule" aria-hidden="true"></span>
+  {hasEyebrow && <p class="eyebrow"><slot name="eyebrow" /></p>}
+  <h1>{title}</h1>
+  <slot />
+</header>
+
+<style>
+  /* ONE header margin for every page in the site. */
+  .page-head {
+    position: relative;
+    margin-bottom: var(--space-12);
+  }
+
+  /* Ambient accent field, the restrained echo of the hero's radial glows.
+     Pinned to the header's own left/right edges so it can never widen the page.
+     The ellipse geometry is deliberate: with radius 40%/50% and centre 30%/40%,
+     the `transparent 72%` stop lands at 30%±28.8% and 40%±36%, which is inside
+     the box on all four sides. Centre the ellipse on an edge instead and the
+     gradient is still at full strength where the box ends, which renders as a
+     hard rectangular seam. */
+  .page-head::before {
+    content: '';
+    position: absolute;
+    inset: calc(var(--space-12) * -1) 0 auto 0;
+    height: calc(100% + var(--space-24));
+    background: radial-gradient(
+      40% 50% at 30% 40%,
+      var(--color-accent-glow),
+      transparent 72%
+    );
+    opacity: 0.45;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .align-center::before {
+    background: radial-gradient(
+      40% 50% at 50% 40%,
+      var(--color-accent-glow),
+      transparent 72%
+    );
+  }
+
+  /* The indigo -> cyan hairline. This is the one piece of the hero that
+     appears on every page. */
+  .accent-rule {
+    display: block;
+    width: 44px;
+    height: 2px;
+    border-radius: var(--radius-pill);
+    background: var(--gradient-accent);
+    margin-bottom: var(--space-6);
+  }
+  .align-center .accent-rule { margin-inline: auto; }
+
+  .eyebrow {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+    margin-bottom: var(--space-3);
+  }
+
+  h1 {
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-4);
+    /* A long project title must wrap rather than push the page sideways. */
+    overflow-wrap: break-word;
+  }
+
+  /* Slotted lede copy. :global() is required because slot children are scoped
+     to the calling page, not to this component. These two classes are the
+     canonical header-copy treatments; pages must not re-declare them. */
+  .page-head :global(.lede) {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    max-width: var(--width-prose);
+  }
+  .page-head :global(.lede-lg) {
+    font-size: var(--text-2xl);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-snug);
+    color: var(--color-text);
+    max-width: var(--width-prose);
+  }
+  .align-center :global(.lede),
+  .align-center :global(.lede-lg) { margin-inline: auto; }
+</style>

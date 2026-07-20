@@ -1,0 +1,40 @@
+---
+/**
+ * PageShell: the single page container.
+ *
+ * Every page-level max-width and gutter lives here. Page files must NOT
+ * re-declare a local `.wrap`; five near-identical copies of that block is what
+ * this component replaces.
+ */
+interface Props {
+  /** 'content' = the 1080px page grid. 'prose' = the 68ch reading measure. */
+  width?: 'content' | 'prose';
+  align?: 'start' | 'center';
+  /** 'roomy' is for short, standalone pages such as 404. */
+  pad?: 'default' | 'roomy';
+}
+
+const { width = 'content', align = 'start', pad = 'default' } = Astro.props;
+---
+<div class:list={['shell', `is-${width}`, `align-${align}`, `pad-${pad}`]}>
+  <slot />
+</div>
+
+<style>
+  /* overflow-x uses clip, deliberately NOT hidden. clip does not create a scroll
+     container and does not trap position:sticky descendants, but it does
+     contain the PageHeader ambient glow, so no page can scroll sideways at
+     320px (WCAG 1.4.10 reflow). */
+  .shell {
+    position: relative;
+    overflow-x: clip;
+    margin-inline: auto;
+    padding: var(--space-12) var(--space-6);
+  }
+
+  .is-content { max-width: var(--width-content); }
+  .is-prose { max-width: var(--width-prose); }
+
+  .align-center { text-align: center; }
+  .pad-roomy { padding-block: var(--space-24); }
+</style>
