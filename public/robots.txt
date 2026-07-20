@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vik-builds.github.io/sitemap-index.xml
