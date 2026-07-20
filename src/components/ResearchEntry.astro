@@ -1,0 +1,72 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { entry: CollectionEntry<'research'> }
+const { entry } = Astro.props;
+---
+<article class="entry">
+  <header>
+    <h3>{entry.data.title}</h3>
+    <span class="year">{entry.data.year}</span>
+  </header>
+  <p class="meta">{entry.data.authors.join(', ')} · {entry.data.venue}</p>
+  <p class="abstract">{entry.data.abstract}</p>
+  {(entry.data.pdf || entry.data.doi) && (
+    <ul class="links">
+      {entry.data.pdf && <li><a href={entry.data.pdf} rel="noopener">PDF</a></li>}
+      {entry.data.doi && <li><a href={`https://doi.org/${entry.data.doi}`} rel="noopener">DOI</a></li>}
+    </ul>
+  )}
+</article>
+
+<style>
+  /* Same 12px bleed rationale as PostCard: safely inside every page gutter. */
+  .entry {
+    padding: var(--space-6) var(--space-3);
+    margin-inline: calc(var(--space-3) * -1);
+    border-bottom: 1px solid var(--color-border);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    transition:
+      border-color var(--duration-base) var(--ease-out),
+      background-color var(--duration-base) var(--ease-out),
+      transform var(--duration-base) var(--ease-out);
+  }
+  .entry:hover,
+  .entry:focus-within {
+    background: var(--color-surface);
+    border-bottom-color: var(--color-border-interactive);
+    transform: translateY(-2px);
+  }
+  header { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); }
+  h3 { font-size: var(--text-md); min-width: 0; overflow-wrap: break-word; }
+  .year { font-size: var(--text-xs); color: var(--color-text-dim); flex-shrink: 0; }
+  .meta {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-accent-quiet);
+    margin-top: var(--space-2);
+  }
+  .abstract {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    max-width: var(--width-prose);
+    margin-top: var(--space-3);
+  }
+  .links {
+    display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4);
+    list-style: none;
+    margin: var(--space-3) 0 0; padding: 0; font-size: var(--text-xs);
+  }
+  .meta { overflow-wrap: break-word; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .entry:hover,
+    .entry:focus-within { transform: none; }
+  }
+
+  @media (max-width: 640px) {
+    .entry { padding: var(--space-4) var(--space-3); }
+    header { flex-wrap: wrap; gap: var(--space-1) var(--space-4); }
+  }
+</style>

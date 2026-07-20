@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageShell from '../../components/PageShell.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (async () => {
+  const projects = await getCollection('projects');
+  // Only projects with body content get a detail page. This MUST match the
+  // hasDetail check in ProjectCard.astro or cards will link to 404s.
+  return projects
+    .filter((project) => (project.body ?? '').trim().length > 0)
+    .map((project) => ({
+      params: { slug: project.id },
+      props: { project },
+    }));
+}) satisfies GetStaticPaths;
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+<BaseLayout
+  title={`${project.data.title} · Vikranth Subramanian`}
+  description={project.data.blurb}
+>
+  <PageShell width="prose">
+    <article>
+      <PageHeader title={project.data.title}>
+        <span slot="eyebrow" class="role">{project.data.role} · {project.data.year}</span>
+        <p class="lede">{project.data.blurb}</p>
+        {project.data.stack.length > 0 && (
+          <ul class="meta stack">{project.data.stack.map((s) => <li>{s}</li>)}</ul>
+        )}
+        {project.data.links && (
+          <ul class="meta links">
+            {project.data.links.repo && <li><a href={project.data.links.repo} rel="noopener">Repository</a></li>}
+            {project.data.links.demo && <li><a href={project.data.links.demo} rel="noopener">Demo</a></li>}
+            {project.data.links.writeup && <li><a href={project.data.links.writeup} rel="noopener">Write-up</a></li>}
+          </ul>
+        )}
+      </PageHeader>
+
+      {/* Long-form styling comes ENTIRELY from the global .prose rule set in
+          src/styles/global.css. Do not add prose rules here. */}
+      <div class="prose"><Content /></div>
+
+      <p class="back"><a href="/work/">← All work</a></p>
+    </article>
+  </PageShell>
+</BaseLayout>
+
+<style>
+  .role { color: var(--color-accent-quiet); }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    list-style: none;
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    font-size: var(--text-xs);
+    color: var(--color-text-dim);
+  }
+  .back { margin-top: var(--space-12); font-size: var(--text-sm); }
+</style>

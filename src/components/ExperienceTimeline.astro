@@ -1,0 +1,187 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  roles: CollectionEntry<'experience'>[];
+  /** Compact mode drops highlights and stack. Used on the homepage. */
+  compact?: boolean;
+}
+
+const { roles, compact = false } = Astro.props;
+
+const MOVEMENT_LABEL: Record<string, string> = {
+  signals: 'Signals',
+  networks: 'Networks',
+  infrastructure: 'Infrastructure',
+  'zero-to-one': 'Zero to one',
+  platforms: 'Platforms',
+  products: 'Products',
+};
+---
+<ol class="timeline" class:list={[{ compact }]}>
+  {roles.map((role) => (
+    <li class="role">
+      <div class="rail" aria-hidden="true">
+        <span class="node"></span>
+      </div>
+
+      <div class="body">
+        <div class="head">
+          <h3>
+            <span class="company">{role.data.company}</span>
+            <span class="sep" aria-hidden="true">·</span>
+            <span class="title">{role.data.role}</span>
+          </h3>
+          <p class="period">
+            <span class="movement">{MOVEMENT_LABEL[role.data.movement]}</span>
+            <span class="dates">{role.data.period}</span>
+          </p>
+        </div>
+
+        <p class="summary">{role.data.summary}</p>
+
+        {!compact && role.data.highlights.length > 0 && (
+          <ul class="highlights">
+            {role.data.highlights.map((h) => <li>{h}</li>)}
+          </ul>
+        )}
+
+        {!compact && role.data.stack.length > 0 && (
+          <ul class="stack">
+            {role.data.stack.map((s) => <li>{s}</li>)}
+          </ul>
+        )}
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .role {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-6);
+    padding-bottom: var(--space-12);
+  }
+  .role:last-child { padding-bottom: 0; }
+
+  /* The vertical rail with a node per role, the spine of the arc. */
+  .rail {
+    position: relative;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      var(--color-border-strong),
+      var(--color-border) 60%,
+      transparent
+    );
+    margin-top: var(--space-2);
+  }
+  .role:last-child .rail {
+    background: linear-gradient(to bottom, var(--color-border-strong), transparent 70%);
+  }
+  .node {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 9px;
+    height: 9px;
+    margin-left: -4px;
+    border-radius: 50%;
+    background: var(--color-bg);
+    border: 1.5px solid var(--color-accent);
+  }
+  /* Every node is rendered identically on purpose. A filled or glowing marker on
+     the first role would read as "currently here", and no role on this timeline is
+     current. The dates carry that information accurately on their own. */
+
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-4);
+  }
+
+  h3 {
+    font-size: var(--text-md);
+    letter-spacing: var(--tracking-snug);
+    margin: 0;
+  }
+  .company { color: var(--color-text); }
+  .sep { color: var(--color-text-dim); margin: 0 var(--space-1); }
+  .title { color: var(--color-text-muted); font-weight: 400; }
+
+  .period {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+    white-space: nowrap;
+    margin: 0;
+  }
+  .movement {
+    color: var(--color-accent-quiet);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    padding: 2px var(--space-2);
+  }
+
+  .summary {
+    margin: var(--space-3) 0 0;
+    color: var(--color-text-muted);
+    max-width: var(--width-prose);
+  }
+
+  /* Compact (homepage): tighter rhythm, since highlights and stack are omitted. */
+  .timeline.compact .role { padding-bottom: var(--space-8); }
+  .timeline.compact .summary { font-size: var(--text-sm); }
+
+  .highlights {
+    margin: var(--space-4) 0 0;
+    padding: 0 0 0 var(--space-4);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    max-width: var(--width-prose);
+  }
+  .highlights li { margin-bottom: var(--space-2); }
+  .highlights li::marker { color: var(--color-accent); }
+
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    margin: var(--space-4) 0 0;
+    padding: 0;
+  }
+  .stack li {
+    font-size: var(--text-xs);
+    color: var(--color-text-dim);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    padding: var(--space-1) var(--space-3);
+  }
+
+  /* Mobile: tighten the rail gutter so the text column keeps its measure. */
+  @media (max-width: 640px) {
+    .role {
+      gap: var(--space-4);
+      padding-bottom: var(--space-8);
+    }
+    .head { flex-direction: column; align-items: flex-start; }
+    .period { white-space: normal; }
+    h3 { font-size: var(--text-base); }
+    .company, .title { display: block; }
+    .sep { display: none; }
+  }
+</style>

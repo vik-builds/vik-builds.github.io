@@ -1,0 +1,87 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { project: CollectionEntry<'projects'> }
+const { project } = Astro.props;
+const hasDetail = (project.body ?? '').trim().length > 0;
+---
+<article class="card">
+  <header>
+    {hasDetail
+      ? <h3><a href={`/work/${project.id}/`}>{project.data.title}</a></h3>
+      : <h3>{project.data.title}</h3>}
+    <span class="year">{project.data.year}</span>
+  </header>
+  <p class="role">{project.data.role}</p>
+  <p class="blurb">{project.data.blurb}</p>
+  {project.data.stack.length > 0 && (
+    <ul class="stack">
+      {project.data.stack.map((s) => <li>{s}</li>)}
+    </ul>
+  )}
+  {project.data.links && (
+    <ul class="links">
+      {project.data.links.repo && <li><a href={project.data.links.repo} rel="noopener">Repository</a></li>}
+      {project.data.links.demo && <li><a href={project.data.links.demo} rel="noopener">Demo</a></li>}
+      {project.data.links.writeup && <li><a href={project.data.links.writeup} rel="noopener">Write-up</a></li>}
+    </ul>
+  )}
+</article>
+
+<style>
+  .card {
+    padding: var(--space-6);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    height: 100%;
+    transition:
+      border-color var(--duration-base) var(--ease-out),
+      background-color var(--duration-base) var(--ease-out),
+      transform var(--duration-base) var(--ease-out),
+      box-shadow var(--duration-base) var(--ease-out);
+  }
+  /* Hover and focus-within are deliberately the SAME treatment: a keyboard user
+     tabbing into the card must get the identical affordance a mouse user gets. */
+  .card:hover,
+  .card:focus-within {
+    border-color: var(--color-border-interactive);
+    background: var(--color-surface-raised);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px -12px color-mix(in srgb, var(--color-accent) 55%, transparent);
+  }
+  header { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4); }
+  h3 { font-size: var(--text-md); min-width: 0; overflow-wrap: break-word; }
+  h3 a { color: var(--color-text); text-decoration: none; }
+  .card:hover h3 a,
+  h3 a:hover,
+  h3 a:focus-visible { color: var(--color-accent-quiet); }
+  .year { font-size: var(--text-xs); color: var(--color-text-dim); flex-shrink: 0; }
+  .role {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-accent-quiet);
+    margin-top: var(--space-2);
+  }
+  .blurb { color: var(--color-text-muted); font-size: var(--text-sm); margin-top: var(--space-3); }
+  .stack, .links {
+    display: flex; flex-wrap: wrap; gap: var(--space-2);
+    list-style: none; margin: var(--space-4) 0 0; padding: 0;
+    font-size: var(--text-xs);
+  }
+  .stack li { color: var(--color-text-dim); }
+  .stack li::after { content: '·'; margin-left: var(--space-2); }
+  .stack li:last-child::after { content: ''; }
+  .links { gap: var(--space-2) var(--space-4); }
+
+  /* The colour/border half of the state still fires; only the motion is dropped. */
+  @media (prefers-reduced-motion: reduce) {
+    .card:hover,
+    .card:focus-within { transform: none; }
+  }
+
+  @media (max-width: 640px) {
+    .card { padding: var(--space-4); }
+  }
+</style>

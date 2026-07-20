@@ -1,0 +1,93 @@
+---
+interface Props {
+  index: number;
+  title: string;
+  period: string;
+  affiliation: string;
+  /** The system this movement operated on. Names the altitude in plain words. */
+  system?: string;
+}
+const { index, title, period, affiliation, system } = Astro.props;
+---
+<section class="movement">
+  <div class="marker" aria-hidden="true">
+    <span class="num">{String(index).padStart(2, '0')}</span>
+    <span class="rungs" style={`--step: ${index}`}>
+      {Array.from({ length: 6 }, (_, i) => (
+        <span class:list={['rung', { reached: i < index }]}></span>
+      ))}
+    </span>
+    <span class="line"></span>
+  </div>
+  <div class="body">
+    <header>
+      <h2>{title}</h2>
+      <p class="period">{period}</p>
+      <p class="affiliation">{affiliation}</p>
+      {system && (
+        <p class="system"><span class="system-label">The system:</span> {system}</p>
+      )}
+    </header>
+    <div class="prose narrative"><slot /></div>
+  </div>
+</section>
+
+<style>
+  .movement { display: flex; gap: var(--space-6); padding-bottom: var(--space-12); }
+  .marker { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+  /* Without min-width:0 a long unbroken token in the slot content can force the
+     flex item wider than its track and scroll the page sideways. */
+  .body { min-width: 0; }
+  .num {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
+    padding-top: var(--space-1);
+  }
+  .line { flex: 1; width: 1px; background: var(--color-border); margin-top: var(--space-3); }
+
+  /* Six rungs per movement, filled up to the current altitude. Reading down the
+     page they fill progressively, so the climb is visible at a glance without
+     needing the reader to hold the previous movement in memory. */
+  .rungs {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 3px;
+    margin-top: var(--space-3);
+  }
+  .rung {
+    width: 10px;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--color-border);
+  }
+  .rung.reached { background: var(--color-accent); }
+  h2 { font-size: var(--text-xl); }
+  .period {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+    margin-top: var(--space-2);
+  }
+  .affiliation { font-size: var(--text-sm); color: var(--color-accent-quiet); margin-top: var(--space-1); }
+  .system { font-size: var(--text-sm); color: var(--color-text-dim); margin-top: var(--space-2); }
+  .system-label {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+  /* Layout only. Typography and paragraph rhythm come from the global .prose
+     rule set, and this class must not restate them. It previously re-declared
+     `.prose` itself, which (a) outranked the global rules via Astro's scoping
+     attribute and (b) recoloured the journey narrative to --color-text-muted,
+     contradicting global.css's own rule that muted is for standfirsts and
+     captions, never article body. The `p + p` margin it also added was
+     redundant with `.prose p`. */
+  .narrative { margin-top: var(--space-4); max-width: var(--width-prose); }
+
+  @media (max-width: 640px) {
+    .movement { gap: var(--space-4); padding-bottom: var(--space-8); }
+    h2 { font-size: var(--text-md); }
+  }
+</style>

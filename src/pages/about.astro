@@ -1,0 +1,384 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PersonSchema from '../components/PersonSchema.astro';
+import PageShell from '../components/PageShell.astro';
+import PageHeader from '../components/PageHeader.astro';
+import JourneyMovement from '../components/JourneyMovement.astro';
+import ArcDiagram from '../components/ArcDiagram.astro';
+import { SITE } from '../lib/site';
+
+const certifications = [
+  'Certified Kubernetes Administrator',
+  'AWS Certified Security – Specialty',
+  'AWS Certified Solutions Architect – Associate',
+  'AWS Certified SysOps Administrator – Associate',
+  'Google Cloud Professional Cloud Architect',
+  'Google Cloud Associate Cloud Engineer',
+  'CCNA',
+  'HCNA',
+];
+
+const education = [
+  { degree: 'Master of Engineering, Telecommunications', school: 'UNSW Sydney', years: '2018 – 2019' },
+  { degree: 'B.Tech, Electronics & Communications Engineering', school: 'Amrita Vishwa Vidyapeetham, Coimbatore', years: '2013 – 2017' },
+];
+
+---
+<BaseLayout
+  title="About · Vikranth Subramanian"
+  description="A decade of work across signals, networks, infrastructure, platforms, and products."
+>
+  <PersonSchema slot="head" />
+
+  <PageShell>
+    <PageHeader title="About">
+      <p class="lede-lg">
+        I've never really changed fields. I've changed altitude.
+      </p>
+      <p class="lede opening-body">
+        For about a decade I've been circling the same question from higher and higher
+        up: how does a complex system actually behave, and how do you build something
+        that holds up inside it? It started with radar returns and antennas. It's
+        currently products. The question hasn't changed much.
+      </p>
+    </PageHeader>
+
+    <ArcDiagram />
+
+    <div class="journey">
+      <JourneyMovement
+        index={1}
+        title="Signals"
+        system="Radar returns, antennas, noise"
+        period="2013 – 2017"
+        affiliation="B.Tech ECE, Amrita Vishwa Vidyapeetham · Ananth Technologies"
+      >
+        <p>
+          I started underneath the software, at the layer where a signal is still
+          physics. I spent my undergraduate years on the problem of extracting truth
+          from noise: tracking targets that don't want to be tracked, detecting returns
+          buried in clutter.
+        </p>
+        <p>
+          That work turned into three publications: non-linear tracking of a submarine
+          using an Extended Kalman Filter, a fuzzy-logic approach to target detection in
+          MIMO radar, and a metaheuristic method for finding and tracking targets. At
+          Ananth Technologies I worked on antenna design and RF systems, and simulated
+          antenna radiation patterns.
+        </p>
+        <p>
+          I didn't know it then, but I was learning the thing I'd keep doing: a system is
+          always telling you what it's doing. Most of the work is building the instrument
+          that can hear it.
+        </p>
+      </JourneyMovement>
+
+      <JourneyMovement
+        index={2}
+        title="Networks"
+        system="Enterprise network behaviour"
+        period="2018 – 2019"
+        affiliation="MEng Telecommunications, UNSW Sydney · RCITI"
+      >
+        <p>
+          I moved to Australia and moved up a layer. Same question, new system: instead
+          of radar returns, enterprise networks.
+        </p>
+        <p>
+          My thesis was <em>Scalable and Real-Time Monitoring Network Behaviour of
+          Enterprise Hosts</em>, which meant detecting malicious activity inside a
+          network by watching how its hosts actually behave, in real time, at a scale
+          where you can't inspect everything. Packet inspection, traffic analysis and
+          performance characterisation with Wireshark, TCPdump and NFF-go; SDN work with
+          the Ryu controller and Mininet for emulation.
+        </p>
+        <p>
+          Alongside it I was a research assistant at RCITI, applying machine learning to
+          improve recovery times in emergency periods, and a UNSW HERO Ambassador. That
+          last role was my first real taste of the other half of building things:
+          convincing people, working with industry partners, and turning an idea into
+          something an organisation would actually adopt.
+        </p>
+      </JourneyMovement>
+
+      <JourneyMovement
+        index={3}
+        title="Infrastructure"
+        system="Cloud estates at migration scale"
+        period="2018 – 2020"
+        affiliation="The Migration Company · Sourced Group"
+      >
+        <p>
+          Then the system got bigger and less theoretical. At The Migration Company and
+          Sourced Group I worked on cloud migrations at genuine scale, the kind where
+          you're moving hundreds of terabytes and millions of users, and the interesting
+          problems are never the ones in the architecture diagram.
+        </p>
+        <p>
+          This is where I stopped thinking about systems as things you observe and
+          started thinking about them as things you're responsible for. Different
+          relationship entirely.
+        </p>
+      </JourneyMovement>
+
+      <JourneyMovement
+        index={4}
+        title="Zero to one"
+        system="The company itself"
+        period="2020 – 2022"
+        affiliation="Kivera · Founding Engineer"
+      >
+        <p>
+          I joined Kivera as the first engineer, which meant I did a bit of everything a
+          startup needs and learned that "the system" now included the company. Product
+          decisions, infrastructure, security, whatever the week demanded.
+        </p>
+        <p>
+          It's the period that changed how I work most. When there's nobody to hand a
+          problem to, you stop waiting for a spec.
+        </p>
+      </JourneyMovement>
+
+      <JourneyMovement
+        index={5}
+        title="Platforms under load"
+        system="Production systems and the teams on them"
+        period="2022 – 2024"
+        affiliation="Lendi Group · Beforepay Group"
+      >
+        <p>
+          Back to scale, but with the founding-engineer instinct intact. At Lendi I moved
+          from DevOps into senior platform engineering over two years; at Beforepay I
+          worked on platform in financial services, where the cost of getting it wrong is
+          measured in someone's actual money.
+        </p>
+        <p>
+          Platform work taught me the part of systems thinking the technical layers
+          don't: a platform's real users are engineers, and a platform that's correct but
+          unpleasant to use fails just as completely as one that's broken.
+        </p>
+      </JourneyMovement>
+
+      <JourneyMovement
+        index={6}
+        title="Products"
+        system="What should be built, not just how"
+        period="2024 – 2026"
+        affiliation="Nullify · Lead Product Engineer"
+      >
+        <p>
+          At Nullify I worked at the intersection of AI, security and user experience,
+          and the job changed shape. It stopped being only <em>how do we build this</em>
+          and became <em>what should this be</em>. That's the altitude I'd been climbing
+          toward without quite naming it.
+        </p>
+        <p>
+          The problems were the genuinely unsolved ones. How does an agent remember, and
+          what should it retrieve when it does? What context belongs in front of a model,
+          and what quietly poisons the output? Where does an agent actually fit inside a
+          workflow that already exists, as opposed to a workflow rebuilt around it? These
+          questions do not have settled answers yet, which is exactly why they were worth
+          working on.
+        </p>
+        <p>
+          Alongside that, securing the codebases themselves. I designed and built the
+          triage system from zero to one, and worked across every edge of the product
+          rather than owning one surface, because robustness lives in the seams between
+          features far more often than inside them.
+        </p>
+      </JourneyMovement>
+    </div>
+
+    <section class="next" aria-labelledby="next-heading">
+      <p class="next-eyebrow">The seventh movement</p>
+      <h2 id="next-heading">Ownership</h2>
+
+      <p class="next-lede">
+        Every step of this has been the same move: getting closer to deciding what gets
+        built. Signals, networks, infrastructure, platforms, products. The next rung is
+        ownership. Building something from zero where I'm accountable for whether it's
+        the right thing, not only whether it works.
+      </p>
+
+      <div class="next-grid">
+        <div class="next-col">
+          <h3>What I'm drawn to</h3>
+          <ul>
+            <li>Problems nobody has settled answers for yet</li>
+            <li>Zero to one, where the question is still what to build</li>
+            <li>AI systems that have to survive contact with real users</li>
+            <li>The infrastructure and security underneath them</li>
+          </ul>
+        </div>
+        <div class="next-col">
+          <h3>What I bring</h3>
+          <ul>
+            <li>A decade across the whole stack, from signal physics to product</li>
+            <li>Founding-engineer experience, twice over</li>
+            <li>Comfort with ambiguity and a bias for shipping</li>
+            <li>The instinct to ask what a system is telling you first</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="next-cta">
+        <p>
+          If you're building something where that instinct is useful, I'd like to hear
+          about it.
+        </p>
+        <p class="contact">
+          <a class="contact-primary" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+          <span class="contact-links">
+            <a href={SITE.social.linkedin} rel="me noopener">LinkedIn</a>
+            <a href={SITE.social.github} rel="me noopener">GitHub</a>
+          </span>
+        </p>
+      </div>
+    </section>
+
+    <div class="details">
+      <section aria-labelledby="education-heading">
+        <h2 id="education-heading">Education</h2>
+        <ul class="plain">
+          {education.map((e) => (
+            <li>
+              <strong>{e.degree}</strong>
+              <span>{e.school}</span>
+              <span class="dim">{e.years}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section aria-labelledby="certs-heading">
+        <h2 id="certs-heading">Certifications</h2>
+        <ul class="plain">{certifications.map((c) => <li>{c}</li>)}</ul>
+      </section>
+
+    </div>
+  </PageShell>
+</BaseLayout>
+
+<style>
+  .opening-body { margin-top: var(--space-4); }
+  .journey { margin-bottom: var(--space-16); }
+  /* The close is the page's destination, not a footnote, so it gets the only
+     accent-lit surface on the page and the widest measure. */
+  .next {
+    position: relative;
+    overflow: hidden;
+    padding: var(--space-12) var(--space-8);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(
+        120% 140% at 100% 0%,
+        color-mix(in srgb, var(--color-accent) 12%, transparent),
+        transparent 60%
+      ),
+      var(--color-surface);
+    margin-bottom: var(--space-16);
+  }
+  /* A gradient hairline across the top edge, echoing the hero accent. */
+  .next::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 1px;
+    background: var(--gradient-accent);
+    opacity: 0.7;
+  }
+
+  .next-eyebrow {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-accent-quiet);
+    margin-bottom: var(--space-2);
+  }
+  .next h2 { font-size: var(--text-3xl); margin-bottom: var(--space-4); }
+  .next-lede {
+    font-size: var(--text-lg);
+    color: var(--color-text);
+    max-width: var(--width-prose);
+    margin-bottom: var(--space-8);
+  }
+
+  .next-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+    gap: var(--space-8);
+    padding-block: var(--space-8);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .next-col h3 {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+    margin-bottom: var(--space-4);
+  }
+  .next-col ul { list-style: none; margin: 0; padding: 0; }
+  .next-col li {
+    position: relative;
+    padding-left: var(--space-4);
+    margin-bottom: var(--space-3);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+  .next-col li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-accent);
+  }
+
+  .next-cta { margin-top: var(--space-8); }
+  .next-cta p { color: var(--color-text); max-width: var(--width-prose); }
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-4) var(--space-6);
+    margin-top: var(--space-4);
+  }
+  .contact-primary {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-text);
+    text-decoration-color: var(--color-accent);
+  }
+  .contact-links { display: flex; gap: var(--space-4); font-size: var(--text-sm); }
+
+  @media (max-width: 640px) {
+    .next { padding: var(--space-8) var(--space-4); }
+    .next h2 { font-size: var(--text-2xl); }
+  }
+  .details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-8);
+  }
+  /* Eyebrow-style label heading. Every other uppercase label in the system
+     (PageHeader .eyebrow, PostCard time, ProjectCard .role, JourneyMovement
+     .period, ExperienceTimeline .period, NowBlock, Hero, ResearchEntry .meta)
+     is --text-xs; this was the lone --text-sm outlier. */
+  .details h2 {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-4);
+  }
+  .plain { list-style: none; margin: 0; padding: 0; font-size: var(--text-sm); color: var(--color-text-muted); }
+  .plain li { margin-bottom: var(--space-3); display: flex; flex-direction: column; gap: var(--space-1); }
+  .plain strong { color: var(--color-text); font-weight: 600; }
+  .dim { color: var(--color-text-dim); font-size: var(--text-xs); }
+</style>

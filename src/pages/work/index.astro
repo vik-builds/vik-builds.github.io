@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageShell from '../../components/PageShell.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import ResearchEntry from '../../components/ResearchEntry.astro';
+import ExperienceTimeline from '../../components/ExperienceTimeline.astro';
+import { getProjects, getResearch } from '../../lib/content';
+import { getExperience } from '../../lib/experience';
+
+const projects = await getProjects();
+const research = await getResearch();
+const experience = await getExperience();
+---
+<BaseLayout
+  title="Work · Vikranth Subramanian"
+  description="Projects and published research across networks, infrastructure, security, and product."
+>
+  <PageShell>
+    <PageHeader title="Work">
+      <p class="lede">
+        A decade across signals, networks, infrastructure, platforms and products.
+      </p>
+      <p class="lede">
+        The titles below are the least interesting thing about any of these roles. I've
+        consistently worked outside them, chasing whatever problem was most worth
+        solving rather than whatever the job description scoped. Platform titles that
+        covered AI work, engineering titles that covered product decisions. Read the
+        descriptions, not the headings.
+      </p>
+    </PageHeader>
+
+    <section aria-labelledby="experience-heading">
+      <h2 id="experience-heading">Experience</h2>
+      <ExperienceTimeline roles={experience} />
+    </section>
+
+    {/* Projects renders only when one exists. An empty section headed
+        "Nothing published yet" advertises an absence rather than filling one. */}
+    {projects.length > 0 && (
+      <section aria-labelledby="projects-heading">
+        <h2 id="projects-heading">Projects</h2>
+        <div class="grid">{projects.map((project) => <ProjectCard project={project} />)}</div>
+      </section>
+    )}
+
+    {research.length > 0 && (
+      <section aria-labelledby="research-heading">
+        <h2 id="research-heading">Research &amp; publications</h2>
+        {research.map((entry) => <ResearchEntry entry={entry} />)}
+      </section>
+    )}
+  </PageShell>
+</BaseLayout>
+
+<style>
+  section { margin-bottom: var(--space-16); }
+  section:last-child { margin-bottom: 0; }
+  h2 {
+    font-size: var(--text-xl);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-6);
+  }
+  /* Identical to the homepage "Selected work" grid; see the note in
+     index.astro for why this is auto-fill rather than auto-fit. Keep the 280px
+     floor in sync across both files. */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+    justify-content: start;
+    gap: var(--space-4);
+  }
+  .empty { color: var(--color-text-dim); }
+</style>

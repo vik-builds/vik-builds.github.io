@@ -1,0 +1,149 @@
+---
+// Decorative animated network graph used behind the hero.
+// Inline SVG + SMIL, so it ships zero JavaScript and works with JS disabled.
+//
+// GEOMETRY / CROP NOTE (this is the whole reason there are two of them):
+// The previous single graph used viewBox="0 0 900 420" with
+// preserveAspectRatio="xMidYMid slice" while authoring every node in the right
+// third of the viewBox (x 475–870). "slice" crops the *centre* of the viewBox to
+// fill the box, so on a 375px-wide hero only the x≈292–608 band survived and 6 of
+// 9 nodes fell off the right edge, leaving the signature visual effectively
+// absent on mobile.
+//
+// Both variants below now use "meet", not "slice". "meet" letterboxes instead of
+// cropping, so NOTHING is ever clipped at any viewport, and the CSS box each SVG
+// is given decides where the composition sits:
+//   - .wide   is pinned to the right half of the hero (the negative space beside
+//             the h1) and shown at >= 768px.
+//   - .narrow is a portrait arrangement that fills the mobile hero behind the
+//             copy at a lower opacity, shown below 768px.
+// Only one is rendered at a time (`display: none` on the other).
+---
+<svg
+  class="network wide"
+  viewBox="0 0 520 420"
+  preserveAspectRatio="xMidYMid meet"
+  aria-hidden="true"
+  focusable="false"
+>
+  <g class="edges">
+    <path d="M200 110 L330 155 L290 275 L160 235 Z" />
+    <path d="M330 155 L450 105" />
+    <path d="M290 275 L420 340" />
+    <path d="M160 235 L60 320" />
+    <path d="M200 110 L120 60" />
+    <path d="M450 105 L480 235" />
+  </g>
+  <g class="nodes">
+    <circle cx="200" cy="110" r="3.5" />
+    <circle cx="330" cy="155" r="3.5" />
+    <circle cx="290" cy="275" r="3.5" />
+    <circle cx="160" cy="235" r="3.5" />
+    <circle cx="450" cy="105" r="2.5" />
+    <circle cx="420" cy="340" r="2.5" />
+    <circle cx="60" cy="320" r="2.5" />
+    <circle cx="120" cy="60" r="2.5" />
+    <circle cx="480" cy="235" r="2.5" />
+  </g>
+  <circle class="packet packet-1" r="3">
+    <animateMotion
+      dur="3.2s"
+      repeatCount="indefinite"
+      path="M200 110 L330 155 L290 275 L160 235 Z"
+    />
+  </circle>
+  <circle class="packet packet-2" r="2.4">
+    <animateMotion
+      dur="4.6s"
+      repeatCount="indefinite"
+      path="M120 60 L200 110 L330 155 L450 105"
+    />
+  </circle>
+</svg>
+
+<svg
+  class="network narrow"
+  viewBox="0 0 360 560"
+  preserveAspectRatio="xMidYMid meet"
+  aria-hidden="true"
+  focusable="false"
+>
+  <g class="edges">
+    <path d="M120 150 L250 205 L215 340 L95 290 Z" />
+    <path d="M250 205 L310 120" />
+    <path d="M215 340 L300 445" />
+    <path d="M95 290 L55 460" />
+    <path d="M120 150 L70 55" />
+    <path d="M310 120 L330 250" />
+  </g>
+  <g class="nodes">
+    <circle cx="120" cy="150" r="4" />
+    <circle cx="250" cy="205" r="4" />
+    <circle cx="215" cy="340" r="4" />
+    <circle cx="95" cy="290" r="4" />
+    <circle cx="310" cy="120" r="3" />
+    <circle cx="300" cy="445" r="3" />
+    <circle cx="55" cy="460" r="3" />
+    <circle cx="70" cy="55" r="3" />
+    <circle cx="330" cy="250" r="3" />
+  </g>
+  <circle class="packet packet-1" r="3.4">
+    <animateMotion
+      dur="3.2s"
+      repeatCount="indefinite"
+      path="M120 150 L250 205 L215 340 L95 290 Z"
+    />
+  </circle>
+  <circle class="packet packet-2" r="2.8">
+    <animateMotion
+      dur="4.6s"
+      repeatCount="indefinite"
+      path="M70 55 L120 150 L250 205 L310 120"
+    />
+  </circle>
+</svg>
+
+<style>
+  .network {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  /* Narrow is the default: full-bleed portrait behind the hero copy. Held at a
+     lower opacity than the desktop variant because it sits *under* the text
+     rather than beside it. */
+  .narrow {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.34;
+  }
+  .wide { display: none; }
+
+  @media (min-width: 768px) {
+    .narrow { display: none; }
+    /* Right half of the hero, the negative space next to the h1. */
+    .wide {
+      display: block;
+      inset: 0 0 0 auto;
+      width: 52%;
+      height: 100%;
+      opacity: 0.5;
+    }
+  }
+
+  .edges path {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 1;
+    opacity: 0.32;
+  }
+  .nodes circle { fill: var(--color-accent); }
+  .packet-1 { fill: var(--color-accent-2); }
+  .packet-2 { fill: var(--color-success); }
+
+  /* Honour reduced-motion: freeze the packets rather than animating them. */
+  @media (prefers-reduced-motion: reduce) {
+    .packet { display: none; }
+  }
+</style>

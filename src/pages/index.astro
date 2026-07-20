@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PersonSchema from '../components/PersonSchema.astro';
+import Hero from '../components/Hero.astro';
+import NowBlock from '../components/NowBlock.astro';
+import PostCard from '../components/PostCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import ExperienceTimeline from '../components/ExperienceTimeline.astro';
+import { SITE } from '../lib/site';
+import { getPublishedPosts, getProjects } from '../lib/content';
+import { getFeaturedExperience } from '../lib/experience';
+
+const posts = (await getPublishedPosts()).slice(0, 3);
+const projects = (await getProjects()).slice(0, 3);
+const experience = await getFeaturedExperience();
+---
+<BaseLayout title={`${SITE.title} · ${SITE.tagline}`} description={SITE.description}>
+  <PersonSchema slot="head" />
+
+  <Hero />
+  <NowBlock />
+
+  {experience.length > 0 && (
+    <section class="band" aria-labelledby="experience-heading">
+      <header class="band-head">
+        <h2 id="experience-heading">Experience</h2>
+        <a href="/about/">The full story →</a>
+      </header>
+      <p class="band-lede">
+        Six movements, one question: how does a complex system actually behave, and how do
+        you build something that holds up inside it?
+      </p>
+      <ExperienceTimeline roles={experience} compact />
+    </section>
+  )}
+
+  {projects.length > 0 && (
+    <section class="band" aria-labelledby="work-heading">
+      <header class="band-head">
+        <h2 id="work-heading">Selected work</h2>
+        <a href="/work/">All work →</a>
+      </header>
+      <div class="grid">
+        {projects.map((project) => <ProjectCard project={project} />)}
+      </div>
+    </section>
+  )}
+
+  {posts.length > 0 && (
+    <section class="band" aria-labelledby="writing-heading">
+      <header class="band-head">
+        <h2 id="writing-heading">Recent writing</h2>
+        <a href="/writing/">All writing →</a>
+      </header>
+      {posts.map((post) => <PostCard post={post} />)}
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .band {
+    max-width: var(--width-content);
+    margin: var(--space-16) auto 0;
+    padding: 0 var(--space-6);
+  }
+  .band-lede {
+    margin: var(--space-4) 0 var(--space-8);
+    color: var(--color-text-muted);
+    max-width: var(--width-prose);
+  }
+  .band-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .band-head h2 { font-size: var(--text-xl); }
+  .band-head a { font-size: var(--text-sm); text-decoration: none; }
+  /* auto-FILL, not auto-fit. auto-fit collapses the empty tracks, so the single
+     project we currently have stretched to the full 1032px content width to
+     hold a 68-character blurb. auto-fill keeps the empty tracks, so a lone card
+     occupies exactly one column (333px at 1440, 352px at 768) and reads as a
+     card rather than a broken band. justify-content: start pins the filled
+     tracks to the left. min(280px, 100%) stops the 280px floor overflowing a
+     320px viewport. Track floor is 280px here AND in work/index.astro;
+     these two grids must stay identical. */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+    justify-content: start;
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+  }
+</style>
