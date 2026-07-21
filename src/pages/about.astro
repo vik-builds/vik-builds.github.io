@@ -166,9 +166,16 @@ const education = [
         period="2024 – 2026"
         affiliation="Nullify · Lead Product Engineer"
       >
+        {/* The `{' '}` below is load-bearing. compressHTML (Astro's default) deletes
+            whitespace that sits against a node boundary rather than collapsing it, so
+            the source newline after </em> vanished and this shipped as "build thisand
+            became". Whitespace inside an uninterrupted text run is only collapsed, which
+            is why the other line breaks here need no help. Keep this comment outside the
+            <p>: placing it between two text lines splits the run and reintroduces the
+            very bug it documents. */}
         <p>
           At Nullify I worked at the intersection of AI, security and user experience,
-          and the job changed shape. It stopped being only <em>how do we build this</em>
+          and the job changed shape. It stopped being only <em>how do we build this</em>{' '}
           and became <em>what should this be</em>. That's the altitude I'd been climbing
           toward without quite naming it.
         </p>

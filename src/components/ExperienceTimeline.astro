@@ -27,7 +27,13 @@ const MOVEMENT_LABEL: Record<string, string> = {
 
       <div class="body">
         <div class="head">
-          <h3>
+          {/* The name is set explicitly because it cannot be derived from the content
+              here. The "·" is aria-hidden, and compressHTML deletes the source newlines
+              between these spans (whitespace against a tag boundary is removed, not
+              collapsed), so the computed name ran the two values together as
+              "NullifyLead Product Engineer". Literal spaces would fix the name but widen
+              the visible gap, which .sep already sets with its margin. */}
+          <h3 aria-label={`${role.data.company}, ${role.data.role}`}>
             <span class="company">{role.data.company}</span>
             <span class="sep" aria-hidden="true">·</span>
             <span class="title">{role.data.role}</span>
