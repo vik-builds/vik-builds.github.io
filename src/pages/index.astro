@@ -68,15 +68,21 @@ const experience = await getFeaturedExperience();
     color: var(--color-text-muted);
     max-width: var(--width-prose);
   }
+  /* flex-wrap so the trailing link can drop under the heading instead of being
+     pushed past the row's right edge and clipped. space-between keeps them on one
+     line whenever there is room, so nothing changes at normal text sizes. */
   .band-head {
     display: flex;
+    flex-wrap: wrap;
     align-items: baseline;
     justify-content: space-between;
     gap: var(--space-4);
     padding-bottom: var(--space-3);
     border-bottom: 1px solid var(--color-border);
   }
-  .band-head h2 { font-size: var(--text-xl); }
+  /* At 200% zoom --text-xl puts a single word ("Experience") wider than a 320px
+     viewport, and there is no space in it to break at. */
+  .band-head h2 { font-size: var(--text-xl); overflow-wrap: anywhere; }
   .band-head a { font-size: var(--text-sm); text-decoration: none; }
   /* auto-FILL, not auto-fit. auto-fit collapses the empty tracks, so the single
      project we currently have stretched to the full 1032px content width to

@@ -359,8 +359,15 @@ const education = [
     font-weight: 600;
     color: var(--color-text);
     text-decoration-color: var(--color-accent);
+    /* The address is one unbreakable token, and at 200% text zoom it is wider than
+       a phone viewport. .next sets `overflow: hidden`, so without this the tail is
+       cut off with no scrollbar to reach it and the contact address the page exists
+       to hand over is unreadable. A mid-address break beats a truncated one. */
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
-  .contact-links { display: flex; gap: var(--space-4); font-size: var(--text-sm); }
+  /* wrap so the two links stack rather than running past the panel edge at 200% zoom. */
+  .contact-links { display: flex; flex-wrap: wrap; gap: var(--space-4); font-size: var(--text-sm); }
 
   @media (max-width: 640px) {
     .next { padding: var(--space-8) var(--space-4); }

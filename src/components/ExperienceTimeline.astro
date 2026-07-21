@@ -77,6 +77,14 @@ const MOVEMENT_LABEL: Record<string, string> = {
   }
   .role:last-child { padding-bottom: 0; }
 
+  /* WCAG 1.4.4. A grid item's automatic minimum size is min-content, so the 1fr
+     track was sized by the widest unbreakable thing inside it rather than by the
+     space available. Under text-only zoom that pushed the column past the shell,
+     and PageShell's `overflow-x: clip` swallowed the excess without producing a
+     scrollbar, so the text was simply gone. min-width: 0 lets the track shrink and
+     the prose rewrap. Same guard, same reason as JourneyMovement.astro. */
+  .body { min-width: 0; }
+
   /* The vertical rail with a node per role, the spine of the arc. */
   .rail {
     position: relative;
@@ -124,8 +132,13 @@ const MOVEMENT_LABEL: Record<string, string> = {
   .sep { color: var(--color-text-dim); margin: 0 var(--space-1); }
   .title { color: var(--color-text-muted); font-weight: 400; }
 
+  /* flex-wrap is the other half of the 1.4.4 fix. min-width: 0 alone only lets the
+     column shrink; this row stayed unbreakable, so the overflow moved here instead
+     of disappearing. The movement pill and the date range must be able to sit on
+     separate lines once there is no room for both. */
   .period {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--space-3);
     font-size: var(--text-xs);
@@ -184,8 +197,17 @@ const MOVEMENT_LABEL: Record<string, string> = {
       gap: var(--space-4);
       padding-bottom: var(--space-8);
     }
-    .head { flex-direction: column; align-items: flex-start; }
+    /* stretch, not flex-start. Under flex-start these items are sized by their own
+       content and can end up wider than .head, escaping the column entirely; the
+       shell's `overflow-x: clip` then deletes the overhang. Stretching pins them to
+       the column width. */
+    .head { flex-direction: column; align-items: stretch; }
     .period { white-space: normal; }
+    /* `anywhere`, not `break-word`: only `anywhere` lowers the intrinsic min-content
+       width, which is what actually lets these boxes shrink. Paired with the stretch
+       above it takes the worst text-zoom overflow to zero; measured, neither one on
+       its own moves it at all. A mid-word break at 200% zoom beats deleted text. */
+    h3, .period { overflow-wrap: anywhere; }
     h3 { font-size: var(--text-base); }
     .company, .title { display: block; }
     .sep { display: none; }

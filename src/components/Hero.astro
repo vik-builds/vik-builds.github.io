@@ -92,7 +92,10 @@ const credentials = [
     border: 1px solid var(--color-border-strong);
     box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 12%, transparent);
   }
-  .intro-text { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+  /* min-width: 0 so this column can shrink inside .intro rather than being sized by
+     the pill's full string; max-width + flex-wrap so the pill itself gives way at
+     200% zoom instead of running past the hero edge. */
+  .intro-text { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-3); min-width: 0; }
   .greeting {
     font-size: var(--text-md);
     color: var(--color-text);
@@ -102,6 +105,8 @@ const credentials = [
 
   .pill {
     display: inline-flex;
+    flex-wrap: wrap;
+    max-width: 100%;
     align-items: center;
     gap: var(--space-2);
     padding: var(--space-2) var(--space-3);
@@ -161,6 +166,11 @@ const credentials = [
     background: var(--color-surface-translucent);
     color: var(--color-text);
   }
+  /* Each entry is its own flex item, so wrapping the row is not enough: at 200%
+     text zoom a single word ("Telecommunications,") is wider than a 320px viewport,
+     and the hero clips it. anywhere lowers the intrinsic minimum so the word itself
+     can break. */
+  .credentials li { min-width: 0; overflow-wrap: anywhere; }
   .credentials {
     position: relative;
     display: flex;
