@@ -9,6 +9,18 @@ export async function getPublishedPosts(): Promise<CollectionEntry<'posts'>[]> {
   return posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 }
 
+/**
+ * Whether the feed has anything in it.
+ *
+ * The rss.xml route always builds, so an existing subscription never starts
+ * 404ing. What is conditional is every pointer AT the feed — the footer link and
+ * the <head> autodiscovery tag — because advertising an empty feed sends readers
+ * and crawlers to a dead end. Both come back on their own once a post ships.
+ */
+export async function hasPublishedPosts(): Promise<boolean> {
+  return (await getPublishedPosts()).length > 0;
+}
+
 /** All projects, featured first, then by year descending. */
 export async function getProjects(): Promise<CollectionEntry<'projects'>[]> {
   const projects = await getCollection('projects');

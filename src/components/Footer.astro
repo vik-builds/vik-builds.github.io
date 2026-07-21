@@ -1,6 +1,8 @@
 ---
 import { SITE } from '../lib/site';
+import { hasPublishedPosts } from '../lib/content';
 const year = new Date().getFullYear();
+const showFeed = await hasPublishedPosts();
 ---
 <footer>
   <div class="inner">
@@ -9,7 +11,7 @@ const year = new Date().getFullYear();
       <li><a href={`mailto:${SITE.email}`}>Email</a></li>
       <li><a href={SITE.social.github} rel="me noopener">GitHub</a></li>
       <li><a href={SITE.social.linkedin} rel="me noopener">LinkedIn</a></li>
-      <li><a href="/rss.xml">RSS</a></li>
+      {showFeed && <li><a href="/rss.xml">RSS</a></li>}
     </ul>
     <p class="right">© {year} {SITE.author}</p>
   </div>

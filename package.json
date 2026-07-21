@@ -16,7 +16,7 @@
     "check:links": "linkinator ./dist",
     "check:lh": "lhci autorun",
     "sync:fonts": "cp node_modules/@fontsource-variable/inter/files/inter-latin-opsz-normal.woff2 public/fonts/inter-latin-var.woff2 && cp node_modules/@fontsource-variable/inter/LICENSE public/fonts/LICENSE.txt",
-    "verify": "npm run check && npm run test && npm run build && npm run check:links && npm run check:lh"
+    "verify": "npm run check && npm run build && npm run test && npm run check:links && npm run check:lh"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
