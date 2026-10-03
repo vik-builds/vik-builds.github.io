@@ -12,5 +12,6 @@ summary: >
 highlights:
   - Built from zero across product, infrastructure and security
   - The period where the system being built included the company itself
+  - Kivera was later acquired by Cloudflare, in 2024
 stack: ['Go', 'Python', 'AWS', 'GCP', 'Cloud security']
 ---

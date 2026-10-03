@@ -1,7 +1,7 @@
 ---
 company: Nullify
 role: Lead Product Engineer
-period: December 2024 – June 2026
+period: December 2024 – July 2026
 start: 2024-12-01
 location: Sydney, NSW
 movement: products
@@ -16,8 +16,13 @@ highlights:
   - Designing where agents belong inside real workflows, rather than bolting them onto existing ones
   - Securing codebases, and the application security surface around AI systems
   - Designed and built the triage system, from zero to one
+  - Built production agents (cloud recon, repo context and triage) running on Claude via the Anthropic API
+  - Worked weekly, over Slack and in person, with a US pharmacy-benefits customer on a cross-team context problem, then scaled the solution across industries to 10 customers
+  - Product work that helped take Nullify from seed into a $12.5M seed extension
   - Worked across every edge of the product, not a single surface, with robustness as the goal
 stack:
+  - Claude
+  - Anthropic API
   - AI agents
   - Context engineering
   - Agent memory
