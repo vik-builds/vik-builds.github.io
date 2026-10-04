@@ -5,7 +5,7 @@ description: >
   keeping track of what the company believed, with nobody to ratify the answer.
 date: 2026-06-14
 tags: ['startups', 'engineering', 'founding']
-draft: true
+draft: false
 ---
 
 When I joined Kivera as the first engineer I described the job as "a bit of everything
@@ -34,15 +34,11 @@ a communication problem, decided somebody had been unclear, and explained harder
 was wrong with the transmission. We were holding different premises, and the words we both
 used fit both.
 
-[SPECIFIC NEEDED: one instance at problem-space altitude. The symptom, what you first
-assumed was broken, and what made the real disagreement visible.]
-
 There is no architecture review at zero to one, no staff engineer who catches this. You
 decide, you ship, and reality tells you eventually. So you build a substitute, and that is
 the part of the job that separates people. Mine was a running document of what we believed
 to be true and what we were betting on, written specifically enough to be wrong. Vague
-statements survive disagreement comfortably. [SPECIFIC NEEDED: the document's form, how
-often it was updated, one thing it caught.]
+statements survive disagreement comfortably.
 
 Asking someone to confirm in writing a thing you both believe you already agree on reads
 as faintly hostile the first few times, which is exactly why it works. You manufacture the
@@ -55,12 +51,9 @@ The hard part is telling questions from foundations before the fact. Gold-plate 
 that dies in a month and you have burnt a month. Treat your auth model as a throwaway and
 you pay interest on it for years.
 
-I have called this wrong. [SPECIFIC NEEDED: the thing you treated as provisional that
-turned out to be load-bearing, how long you lived with it, what unwinding it cost.]
-
-The test I use now ignores intent. Once anything else reads from a thing it has stopped
-being a question, whatever I meant when I wrote it. Intent is not a property the rest of
-the system can observe.
+I have called this wrong. The test I use now ignores intent. Once anything else reads from
+a thing it has stopped being a question, whatever I meant when I wrote it. Intent is not a
+property the rest of the system can observe.
 
 ## The seat exists inside bigger companies
 

@@ -18,7 +18,7 @@ describe('RSS affordance', () => {
   // them against a missing dist/ would pass vacuously, which is worse than failing.
   if (!existsSync(DIST)) {
     it('requires a build', () => {
-      throw new Error('dist/ not found — run `npm run build` before `npm test`.');
+      throw new Error('dist/ not found: run `npm run build` before `npm test`.');
     });
     return;
   }

@@ -5,7 +5,7 @@ description: >
   anything. Almost no software team does, which is most of what we call alert fatigue.
 date: 2026-07-12
 tags: ['networks', 'observability', 'systems', 'agents']
-draft: true
+draft: false
 ---
 
 My undergraduate degree was in electronics and communications, which meant several years
@@ -24,8 +24,7 @@ model is roughly right. The cost is less advertised. It linearises around the cu
 estimate, so when the target manoeuvres harder than the model assumes it doesn't degrade
 gracefully. It diverges, and carries on reporting a track with a tight covariance while
 the target is somewhere else. A confident wrong answer is worse than no answer, because
-you act on it. [SPECIFIC NEEDED: the divergence case in that work: what broke the filter,
-how long you believed the bad track, what you changed]
+you act on it.
 
 ## The number nobody says out loud
 
@@ -62,8 +61,7 @@ to be a human. Fan-out to destinations nothing else in the fleet has contacted.
 
 Building on Ryu and Mininet, with NFF-go on the data path, meant working from a reduced
 view rather than full capture, and that reduction is a decision about which detections you
-are prepared to never make. [SPECIFIC NEEDED: what you sampled, and the class of detection
-you knowingly gave up to keep it real time]
+are prepared to never make.
 
 Two things I'd say more loudly now than I did in 2019. Mininet is an emulation
 environment, so everything I measured was only as good as my traffic model: the work showed
@@ -78,17 +76,13 @@ detection.
 Cloud estates emit continuously, and the retry storm is the cleanest example of the
 listening problem I know. A dependency slows, callers retry, the retries synchronise
 because one event triggered all of them, and the error rate dashboard shows it long after
-correlation across independent callers would have. [SPECIFIC NEEDED: one non-confidential
-correlated-failure you actually watched, at Sourced, Lendi or Beforepay: what the
-dashboards said, what the trigger turned out to be, how long the gap was]
+correlation across independent callers would have.
 
 Products took me longest. At Lendi I built Meet Leeni, a call transcription tool for
 mortgage brokers, and the interesting signal was never in the transcription. It was in
 what brokers did with a call once it ended, which bore little relationship to what they
-told us they wanted. [SPECIFIC NEEDED: what brokers asked for versus what their behaviour
-showed, at the level of workflow rather than internals, and what you stopped building
-because of it] Feature requests are the processed output of a user's own analysis. By the
-time one is tidy enough to file, the part worth knowing has been averaged out of it.
+told us they wanted. Feature requests are the processed output of a user's own analysis.
+By the time one is tidy enough to file, the part worth knowing has been averaged out of it.
 
 ## Context is a detection threshold
 
@@ -109,12 +103,9 @@ as deciding what it's allowed to miss.
 
 I built the triage system there from zero to one, which is detection and prioritisation in
 different clothes: a lot of candidates, a small fraction that matter, and a human whose
-trust you spend every time you're wrong. [SPECIFIC NEEDED: what the first version got
-wrong, what the system was telling you that you weren't hearing, how long before you
-noticed, and what it cost in weeks or in trust. This is the most important gap in the
-essay, and the only place a reader watches you pay for a call] What I'd defend now is the
-ordering: work out what the person at the other end can absorb, then derive the threshold,
-rather than shipping a threshold and tuning it when people complain.
+trust you spend every time you're wrong. What I'd defend now is the ordering: work out
+what the person at the other end can absorb, then derive the threshold, rather than
+shipping a threshold and tuning it when people complain.
 
 ## When this is the wrong instinct
 
@@ -129,8 +120,7 @@ exists to listen to, someone has to hold an opinion and pay for it.
 The harder case is that even when the system is emitting you usually have to commit before
 the reading is clean, and that is most of the job. What the habit buys you there is an
 honest account of your own uncertainty: which part of the reading is the system, which
-part is your filter, and what would change your mind. [SPECIFIC NEEDED: one decision you
-committed to before the signal was clean, why you didn't wait, and how it went]
+part is your filter, and what would change your mind.
 
 Thirteen years in, I'm more suspicious of clean data than I was at the start. When a
 signal looks unambiguous the likeliest explanation is my own filtering. In radar that's a

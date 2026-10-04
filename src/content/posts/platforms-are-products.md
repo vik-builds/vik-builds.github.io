@@ -5,7 +5,7 @@ description: >
   you will ever get, and most teams treat them as a compliance problem.
 date: 2026-06-28
 tags: ['platform engineering', 'product', 'developer experience']
-draft: true
+draft: false
 ---
 
 The platform team ships something correct. Well-architected, handles the edge cases,
@@ -17,10 +17,8 @@ And then, quietly, engineers route around it.
 I know the shape of that because I have been the team. At Nullify I designed and built
 the triage system from nothing, and I was confident about it in the way you are
 confident about something you have reasoned through carefully and not yet watched anyone
-use. [SPECIFIC NEEDED: what people actually did instead in the early weeks, at category
-level: kept a manual list, re-ran things by hand, ignored a queue? And roughly how long
-before you noticed.] The correction was not architectural. I had built the thing I would
-have wanted, having already loaded every assumption that made it obvious.
+use. The correction was not architectural. I had built the thing I would have wanted,
+having already loaded every assumption that made it obvious.
 
 Nobody escalates when this happens, because nobody thinks of it as a problem. They think
 of it as getting their job done.
@@ -100,8 +98,7 @@ complain, at volume, in your logs.
 
 So the practice is not "write the getting-started path yourself." It is to hand the
 whole path to an agent, keep the transcript, and treat every stall as a defect with an
-owner. [SPECIFIC NEEDED: whether you have run this against a real onboarding path yet,
-and what the biggest single blocker turned out to be. If you have not, say so plainly.]
+owner.
 
 ## What I would want to be measured on
 

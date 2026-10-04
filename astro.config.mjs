@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 // GitHub Pages USER SITE. The repo must be named exactly `vik-builds.github.io`.
-// No `base` is set — root-relative links (`/work/`) work as written.
+// No `base` is set, so root-relative links (`/work/`) work as written.
 // To move to a custom domain later: change `site` and add `public/CNAME`. Nothing else changes.
 export default defineConfig({
   site: 'https://vik-builds.github.io',
